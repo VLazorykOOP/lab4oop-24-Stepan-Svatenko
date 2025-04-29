@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include "tasks.h"
+
 using namespace std;
 
 class Human{
@@ -78,11 +80,15 @@ class Assoc{
     }
 };
 
-int unit_asooc(int argc, char *argv[]) {
-  std::cout << "Hello, World!\n";
+void unit_assoc() {
   Assoc<string, string> a;
-  a.add("loser","look at me");
-  cout << a["loser"]<< endl;
-  cout << a("look at me");
-  return 0;
+  a.add("Stepan","3800000001");
+  a.add("Noname", "380000003");
+  cout << a["Stepan"]<< endl;
+  cout << a("3800000001")<< endl;
+
+  cout << a << endl;
+  
+
+  
 }

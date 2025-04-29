@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include "tasks.h"
 using namespace std;
 
 enum state{
@@ -153,17 +153,21 @@ protected:
 public:
   MatrixShort(int n, int m, type_data init_value = 0) : n(n), m(m){
     ShortArray = new VectorShort<type_data>[n];
+    count_obj++;
     for (int i = 0; i < n; i++) ShortArray[i] = VectorShort<type_data>(m, init_value);
   }
   MatrixShort(int size) : n(size), m(size){
     ShortArray = new VectorShort<type_data>[n];
     for (int i = 0; i < n; i++) ShortArray[i] = VectorShort<type_data>(m, 1);
+    count_obj++;
   }
   MatrixShort(const MatrixShort& a) : n(a.n), m(a.m){
     ShortArray = new VectorShort<type_data>[n];
     for (int i = 0; i < n; i++) ShortArray[i] = a.ShortArray[i];
+    count_obj++;
   }
   ~MatrixShort(){
+    count_obj--;
     delete [] ShortArray;
   }
   MatrixShort operator=(const MatrixShort& a){
@@ -180,7 +184,8 @@ public:
   int getRow() const { return n; }
   int getCols() const { return m; }
   state getState() const { return STATE; }
-
+  static int getCountObj() { return count_obj; }
+  
 
   MatrixShort& operator++(){
     for (int i = 0; i < n; i++)
@@ -414,8 +419,9 @@ public:
 
 
 };
+template <typename type_data>
+int MatrixShort<type_data>::count_obj = 0;
 
-// Оператор виводу для матриці
 template <typename type_data>
 ostream& operator<<(ostream& os, const MatrixShort<type_data>& matrix) {
   for (int i = 0; i < matrix.n; ++i) {
@@ -427,7 +433,6 @@ ostream& operator<<(ostream& os, const MatrixShort<type_data>& matrix) {
   return os;
 }
 
-// Оператор вводу для матриці
 template <typename type_data>
 istream& operator>>(istream& is, MatrixShort<type_data>& matrix) {
   for (int i = 0; i < matrix.n; ++i) {
@@ -444,7 +449,7 @@ istream& operator>>(istream& is, MatrixShort<type_data>& matrix) {
 
 
 
-int main (int argc, char *argv[]) {
+void unit_matrix () {
  // Створення двох матриць
     MatrixShort<int> mat1(3, 3, 1);  // 3x3 матриця, ініціалізована значеннями 1
     MatrixShort<int> mat2(3, 3, 2);  // 3x3 матриця, ініціалізована значеннями 2
@@ -542,6 +547,6 @@ int main (int argc, char *argv[]) {
     // Операція побітового XOR з присвоєнням
     mat1 ^= 2;
     cout << "Matrix 1 after ^= 2:\n" << mat1;
+    cout << MatrixShort<int>::getCountObj();
 
-    return 0;
 }
